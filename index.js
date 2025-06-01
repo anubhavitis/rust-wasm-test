@@ -1,13 +1,27 @@
 import init, { mandelbrot } from './pkg/rust_wasm_test.js';
 
 let zoom = 1.0;
+let maxIter = 7;
+
+function incrementMaxIter() {   
+    maxIter++;
+    document.getElementById('maxIterValue').textContent = maxIter;
+    renderMandelbrot();
+}
+
+function decrementMaxIter() {
+    maxIter--;
+    document.getElementById('maxIterValue').textContent = maxIter;
+    renderMandelbrot();
+}
 
 async function run() {
     await init();
     // Add event listeners to sliders
     document.getElementById('width').addEventListener('input', handleSliderChange);
     document.getElementById('height').addEventListener('input', handleSliderChange);
-    document.getElementById('maxIter').addEventListener('input', handleSliderChange);
+    document.getElementById('maxIterDecrement').addEventListener('click', decrementMaxIter);
+    document.getElementById('maxIterIncrement').addEventListener('click', incrementMaxIter);
     // Initial render
     renderMandelbrot();
 }
@@ -28,7 +42,8 @@ function handleSliderChange(e) {
 function renderMandelbrot() {
     const width = parseInt(document.getElementById('width').value);
     const height = parseInt(document.getElementById('height').value);
-    const max_iter = parseInt(document.getElementById('maxIter').value);
+    // Use the JS variable, not the DOM
+    const max_iter = maxIter;
 
     const canvas = document.getElementById('mandelbrotCanvas');
     canvas.width = width;
@@ -63,4 +78,7 @@ window.zoomOut = function () {
     renderMandelbrot();
 }
 
-document.addEventListener('DOMContentLoaded', run); 
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('maxIterValue').textContent = maxIter;
+    run();
+}); 
