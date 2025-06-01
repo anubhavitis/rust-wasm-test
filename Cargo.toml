@@ -1,0 +1,11 @@
+[package]
+name = "rust-wasm-test"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+# ref: https://rustwasm.github.io/wasm-pack/book/tutorials/npm-browser-packages/template-deep-dive/cargo-toml.html#1-crate-type
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"

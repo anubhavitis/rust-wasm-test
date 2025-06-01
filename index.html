@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandelbrot Set</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .grid-background {
+            background-size: 20px 20px;
+            background-image:
+                linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+                linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+        }
+
+        #mandelbrotCanvas {
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 p-8">
+    <div class="max-w-4xl mx-auto">
+        <div>
+            <h1 class="text-2xl font-bold mb-2">rust-wasm-test</h1>
+            <p class="mb-12 text-gray-700">This interactive Mandelbrot set viewer is powered by Rust and WebAssembly
+                (WASM). The Mandelbrot set is computed in Rust, compiled to WebAssembly, and rendered in your browser
+                using JavaScript and HTML canvas. Adjust the sliders to change the image size and iteration depth, and
+                use the zoom buttons to explore the fractal in real time!</p>
+
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <!-- Responsive flex: column on mobile, row on desktop -->
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Width: <span id="widthValue">800</span>px
+                    </label>
+                    <input type="range" id="width" min="100" max="1200" value="800"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Height: <span id="heightValue">600</span>px
+                    </label>
+                    <input type="range" id="height" min="100" max="1000" value="600"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+
+                <div class="flex-1">
+                    <label class="block text-sm font-medium text-gray-700">
+                        Max Iterations: <span id="maxIterValue">100</span>
+                    </label>
+                    <input type="range" id="maxIter" min="10" max="1000" value="100"
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-background rounded-lg shadow-lg p-4">
+            <canvas id="mandelbrotCanvas" class="w-full rounded-lg"></canvas>
+            <div class="flex justify-center gap-4 mt-4">
+                <button onclick="zoomIn()"
+                    class="w-10 h-10 bg-black/40 text-white font-lg rounded-full hover:bg-blue-600">
+                    +</button>
+                <button onclick="zoomOut()"
+                    class="w-10 h-10 bg-black/40 text-white font-lg rounded-full hover:bg-blue-600">
+                    -</button>
+            </div>
+        </div>
+
+        <div class="mt-6 p-4 rounded">
+            <h2 class="font-semibold mb-1">What is the Mandelbrot Set?</h2>
+            <p class="mb-4 text-gray-700">The Mandelbrot set is a famous mathematical fractal, defined by a simple
+                equation but producing infinitely complex and beautiful patterns. Each point in the set represents a
+                complex number, and the set's intricate boundary is revealed by repeatedly applying a mathematical
+                formula and checking whether the result escapes to infinity.</p>
+            <h2 class="font-semibold mb-1">Computation Overload</h2>
+            <p class="mb-4 text-gray-700">Rendering the Mandelbrot set is computationally intensive. For each pixel,
+                the program must perform dozens or even hundreds of mathematical iterations to determine if the
+                point belongs to the set. This means millions of calculations for a single image, especially at high
+                resolutions or deep zoom levels.</p>
+            <h2 class="font-semibold mb-1">How WebAssembly (WASM) Helps</h2>
+            <p class="text-gray-700">WebAssembly allows us to run high-performance code (written in languages like
+                Rust) directly in your browser. By moving the heavy computation from JavaScript to Rust compiled to
+                WASM, we achieve much faster rendering and smoother interactivity, even for complex fractals like
+                the Mandelbrot set. This makes real-time exploration possible right in your browser!</p>
+        </div>
+    </div>
+</body>
+
+<script type="module" src="./index.js"></script>
+
+</html>
